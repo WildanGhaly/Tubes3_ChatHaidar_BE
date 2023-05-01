@@ -10,6 +10,10 @@ var con = mysql.createConnection({
 const database = "sql12615211";             // Change this to your MySQL database name
 
 con.connect(function(err) { 
+  console.log("Connected!");
+  console.log(process.env.MYSQL_HOST);
+  console.log(process.env.MYSQL_USER);
+  console.log(process.env.MYSQL_PASSWORD);
   if (err) throw err;
 
   // Check if database exists
