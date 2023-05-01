@@ -2,9 +2,9 @@ var mysql = require('mysql');
 require('dotenv').config();
 
 var con = mysql.createConnection({
-  host      : process.env.MYSQL_HOST,
-  user      : process.env.MYSQL_USER,
-  password  : process.env.MYSQL_PASSWORD
+  host      : "sql12.freemysqlhosting.net",
+  user      : "sql12615211",
+  password  : "Lj45VRvz75"
 });
 
 const database = "sql12615211";             // Change this to your MySQL database name
