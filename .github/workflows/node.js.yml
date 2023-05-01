@@ -10,6 +10,8 @@ jobs:
         run: npm install
       - name: Run tests
         env:
-          SECRET_KEY: ${{ secrets.MY_SECRET_KEY }}
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
         run: |
-          node test.js
+          node server.js
