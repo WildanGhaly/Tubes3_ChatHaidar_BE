@@ -1,7 +1,7 @@
 require('dotenv').config()
 const mysql = require('mysql2')
 
-const con = mysql.createConnection('mysql://2jky2y9kclbkfry07yx3:pscale_pw_nj39aRSNP7o1PYE7CDvPXPkWNqDIlYYdpW5ZflK4Lp1@aws.connect.psdb.cloud/tubes3_stima?ssl={"rejectUnauthorized":true}')
+const con = mysql.createConnection(process.env.PLANETSCALE_DATABASE)
 console.log('Connected to PlanetScale!')
 
 
