@@ -102,11 +102,18 @@ function kmp(text) {
                                     });
                                 }
                                 else {
-                                result = 'Apakah yang anda maksud adalah : ';
-                                for (let i = 0; i < 3; i++) {
-                                    result += "\n" + (i + 1) + ". " + similarStrings[i].string;
-                                } 
-                                resolve(result); // resolve the result here
+                                    result = 'Apakah yang anda maksud adalah : ';
+                                    if (qResult.length < 3){
+                                        for (let i = 0; i < qResult.length; i++) {
+                                            result += "\n" + (i + 1) + ". " + similarStrings[i].string;
+                                        }
+                                    }else {
+                                        for (let i = 0; i < 3; i++) {
+                                            result += "\n" + (i + 1) + ". " + similarStrings[i].string;
+                                        } 
+                                    }
+                                    // console.log(result + " (BM)");
+                                    resolve(result); // resolve the result here
                             }
                                 
                             }

@@ -1,6 +1,8 @@
-const { con, getQuestions, getAnswers } = require("../db");
+const { con, getQuestions, getAnswers, insertQuestions, updateAnswer, deleteQuestion } = require("../db");
 const { calculateEquation } = require("./calculator");
+const { getDayOfWeek } = require("./date");
 const { getSimilarity, levenshteinDistance } = require("./similarity");
+
 /**
  * @param {string} text
  * Pencarian pertanyaan yang paling mirip dengan pertanyaan yang diberikan pengguna dilakukan dengan 
@@ -102,11 +104,18 @@ function bm (text) {
                                 });
                             }
                             else {
-                            result = 'Apakah yang anda maksud adalah : ';
-                            for (let i = 0; i < 3; i++) {
-                                result += "\n" + (i + 1) + ". " + similarStrings[i].string;
-                            } 
-                            resolve(result); // resolve the result here
+                                result = 'Apakah yang anda maksud adalah : ';
+                                if (qResult.length < 3){
+                                    for (let i = 0; i < qResult.length; i++) {
+                                        result += "\n" + (i + 1) + ". " + similarStrings[i].string;
+                                    }
+                                }else {
+                                    for (let i = 0; i < 3; i++) {
+                                        result += "\n" + (i + 1) + ". " + similarStrings[i].string;
+                                    } 
+                                }
+                                // console.log(result + " (BM)");
+                                resolve(result); // resolve the result here
                         }
                             
                         }
