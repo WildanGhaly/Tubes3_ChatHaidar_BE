@@ -107,7 +107,6 @@ function calculateEquation(equationString){
     console.log(equationString);
     const equation = equationString
         .replace(/\s/g, '') 
-        .replace(/^what(is)?/i, '')
         .replace(/\?+$/g, ''); 
 
     const equationParts = equation.split(/([\+\-\*\/\^\\%\|\&\(\)])/).filter(part => part !== ''); 

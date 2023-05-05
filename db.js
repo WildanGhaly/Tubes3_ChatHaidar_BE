@@ -1,34 +1,26 @@
-var mysql = require('mysql');
-require('dotenv').config();
+require('dotenv').config()
+const mysql = require('mysql2')
 
-var con = mysql.createConnection({
-  host      : "sql12.freemysqlhosting.net",
-  user      : "sql12615211",
-  password  : "Lj45VRvz75"
-});
+const con = mysql.createConnection('mysql://2jky2y9kclbkfry07yx3:pscale_pw_nj39aRSNP7o1PYE7CDvPXPkWNqDIlYYdpW5ZflK4Lp1@aws.connect.psdb.cloud/tubes3_stima?ssl={"rejectUnauthorized":true}')
+console.log('Connected to PlanetScale!')
 
-const database = "sql12615211";             // Change this to your MySQL database name
 
-con.connect(function(err) { 
-  console.log("Connected!");
-  console.log(process.env.MYSQL_HOST);
-  console.log(process.env.MYSQL_USER);
-  console.log(process.env.MYSQL_PASSWORD);
+con.connect(function(err) {
   if (err) throw err;
 
   // Check if database exists
-  con.query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '" + database + "'", function (err, result, fields) {
+  con.query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'tubes3_stima'", function (err, result, fields) {
     if (err) throw err;
 
     if (result.length === 0) {
       // If the database does not exist, create it
-      con.query("CREATE DATABASE '" + database + "'", function (err, result) {
+      con.query("CREATE DATABASE tubes3_stima", function (err, result) {
         if (err) throw err;
         console.log("Database created");
 
         // Use the database
-        con.query("USE " + database, function (err, result) {
-          if (err) throw err; 
+        con.query("USE tubes3_stima", function (err, result) {
+          if (err) throw err;
 
           // Create tables
           con.query("CREATE TABLE users (Username VARCHAR(255), Password VARCHAR(255))", function (err, result) {
@@ -49,7 +41,7 @@ con.connect(function(err) {
       });
     } else {
       // If the database already exists, use it
-      con.query("USE " + database, function (err, result) {
+      con.query("USE tubes3_stima", function (err, result) {
         if (err) throw err;
 
         console.log("Database already exists");
@@ -141,6 +133,20 @@ function insertQuestions(question, answer){
   });
 }
 
+function updateAnswer(question, answer){
+  con.query("UPDATE questions SET answer = \"" + answer + "\" WHERE question = \"" + question + "\";", function (err, result){
+    if(err) throw err;
+    console.log("1 Question updated");
+  });
+}
+
+function deleteQuestion(question){
+  con.query("DELETE FROM questions WHERE question = \"" + question + "\";", function(err, result){
+    if (err) throw err;
+    console.log("1 Question deleted");
+  });
+}
+
 function getQuestions(){
   return new Promise((resolve, reject) => {
     var sql = "SELECT question FROM questions";
@@ -161,4 +167,4 @@ function getAnswers(question){
   });
 }
 
-module.exports = { con, insertUser, register, login , insertMessage, insertQuestions, load, getQuestions, getAnswers};
+module.exports = { con, insertUser, register, login , insertMessage, insertQuestions, load, getQuestions, getAnswers, updateAnswer, deleteQuestion };

@@ -1,6 +1,7 @@
 const { con, insertUser, register, login, insertMessage, load } = require("./db");
 const { bm } = require("./Algorithm/bm");
 const { kmp } = require("./Algorithm/kmp");
+const { searchAll } = require("./Algorithm/Algorithm");
 
 const express = require("express");
 const cors = require("cors");
@@ -11,19 +12,14 @@ app.use(express.json());
 
 app.get("/message/:variable1/:variable2", (req, res) => {
   const { variable1, variable2 } = req.params;
-  if (variable1 === "bm") {
-    res.json({ message: bm(variable2) });
-  } else if (variable1 === "kmp") {
-    kmp(variable2)
-      .then(function(result) {
-        res.json({ message: result });
-      })
-      .catch(function(err) {
-        res.json({ message: err });
-      });
-  } else {
-    res.json({ message: `Hello from server! You passed ${variable1} and ${variable2}` });
-  }
+  searchAll(variable2, variable1)
+    .then(function(result) {
+      console.log("Here reslt " + result)
+      res.json({ message: result });
+    })
+    .catch(function(err) {
+      res.json({ message: err });
+    });
 });
 
 app.get("/register/:username/:password", (req, res) => {
@@ -86,6 +82,20 @@ app.get("/newchat/:messages", (req, res) => {
   }
 });
 
-app.listen(8000, () => {
-  console.log(`Server is running on port 8000.`);
+app.get("/clearConversation/:username", (req, res) => {
+  const { username } = req.params;
+  con.query(`DELETE FROM messages WHERE username = '${username}'`, function(err, result) {
+    console.log(username);
+    if (err) {
+      res.json({ message: `Error clearing conversation!` });
+    } else {
+      res.json({ message: `Conversation cleared!` });
+    }
+  });
+});
+
+const port = process.env.PORT || 8000;
+
+app.listen(port, () => {
+  console.log(`Server is running on port 8000?.`);
 });
